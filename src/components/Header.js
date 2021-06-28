@@ -1,10 +1,56 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
+import { auth, provider } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import {
+  setSignOutState,
+  selectUserName,
+  setUserLoginDetails,
+  selectUserPhoto,
+} from "../features/user/userSlice";
 const Header = () => {
-  const [userName] = useState("");
-  const [userPhoto] = useState("");
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
   const handleAuth = () => {
-    console.log("hh");
+    if (!userName) {
+      auth
+        .signInWithPopup(provider)
+        .then((result) => {
+          setUser(result.user);
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    } else if (userName) {
+      auth
+        .signOut()
+        .then(() => {
+          dispatch(setSignOutState());
+          history.push("/");
+        })
+        .catch((err) => alert(err.message));
+    }
+  };
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        history.push("/home");
+      }
+    });
+  }, [userName]);
+  const setUser = (user) => {
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
   };
   return (
     <Nav>
