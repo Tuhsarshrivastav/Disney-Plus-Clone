@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./screens/Login";
+import Header from "./components/Header";
 function App() {
   return (
     <div className="App">
       <Router>
+        <Header />
         <Switch>
           <Route exact path="/">
             <Login />
@@ -13,6 +15,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
