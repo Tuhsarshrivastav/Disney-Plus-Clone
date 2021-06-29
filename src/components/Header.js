@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import {
   setSignOutState,
   selectUserName,
@@ -54,9 +54,11 @@ const Header = () => {
   };
   return (
     <Nav>
-      <Logo>
-        <img src="/images/logo.svg" alt="Disney+" />
-      </Logo>
+      <Link to="/home">
+        <Logo>
+          <img src="/images/logo.svg" alt="Disney+" />
+        </Logo>
+      </Link>
       {!userName ? (
         <Login onClick={handleAuth}>Login</Login>
       ) : (
@@ -139,6 +141,7 @@ const NavMenu = styled.div`
   position: relative;
   margin-right: auto;
   margin-left: 25px;
+  cursor: pointer;
 
   a {
     display: flex;
@@ -201,6 +204,7 @@ const Login = styled.a`
   border: 1px solid #f9f9f9;
   border-radius: 4px;
   transition: all 0.2s ease 0s;
+  cursor: pointer;
 
   &:hover {
     background-color: #f9f9f9;
